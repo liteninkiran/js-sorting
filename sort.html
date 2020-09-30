@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <title>Interactive Column Sorting</title>
+
+        <style>
+
+            table
+            {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th
+            {
+                border: 1px solid #cccccc;
+                padding: 8px;
+            }
+
+            th
+            {
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            tr:nth-child(even)
+            {
+                background-color: #dddddd;
+            }
+
+            tr:hover
+            {
+                background-color: black;
+                color: white;
+            }
+
+        </style>
+
+        <script>
+            let sortDirection = false;
+            let personData =
+            [
+                {name: 'Dylan', age: 31},
+                {name: 'Christopher', age: 30},
+                {name: 'Israel', age: 29},
+                {name: 'ThugNasty', age: 14},
+                {name: 'Dollan', age: 31},
+            ];
+
+            window.onload = () => {
+                loadTableData(personData);
+            };
+
+            loadTableData(personData);
+
+            function loadTableData(personData)
+            {
+                const tableBody = document.getElementById('tableData');
+                let dataHTML = '';
+
+                for(let person of personData)
+                {
+                    dataHTML += `<tr><td>${person.name}</td><td>${person.age}</td></tr>`;
+                }
+
+                tableBody.innerHTML = dataHTML;
+            }
+
+            function sortColumn(columnName)
+            {
+                const dataType = typeof personData[0][columnName];
+
+                sortDirection = !sortDirection;
+
+                switch(dataType)
+                {
+                    case 'number':
+                        sortNumberColumn(sortDirection, columnName);
+                        break;
+                }
+
+                loadTableData(personData);
+            }
+
+            function sortNumberColumn(sort, columnName)
+            {
+                personData = personData.sort((p1, p2) =>
+                {
+                    return sort ? p1[columnName] - p2[columnName] : p2[columnName] - p1[columnName]
+                })
+            }
+
+        </script>
+
+    </head>
+
+    <body>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th onclick="sortColumn('age')">Age</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableData">
+
+            </tbody>
+
+        </table>
+
+    </body>
+
+</html>
