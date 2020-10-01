@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <title>Sortable Table with JavaScript</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <style>
+            th
+            {
+                color:#fff;
+            }
+        </style>
+
+    </head>
+
+    <body>
+
+        <table id="myTable" class="table table-striped">
+
+            <thead>
+                <tr class="bg-info">
+                    <th data-column="name" data-order="desc">Name</th>
+                    <th data-column="age" data-order="desc">Age</th>
+                    <th data-column="birthdate" data-order="desc">Birthday</th>
+                </tr>
+            </thead>
+
+            <tbody id="myTableBody">
+                
+            </tbody>
+
+        </table>
+
+        <script>
+
+            var myArray =
+            [
+                {'name':'Michael', 'age':'30', 'birthdate':'1989-11-10'},
+                {'name':'Mila'   , 'age':'32', 'birthdate':'1989-10-01'},
+                {'name':'Paul'   , 'age':'29', 'birthdate':'1990-10-14'},
+                {'name':'Dennis' , 'age':'25', 'birthdate':'1993-11-29'},
+                {'name':'Tim'    , 'age':'27', 'birthdate':'1991-03-12'},
+                {'name':'Erik'   , 'age':'24', 'birthdate':'1995-10-31'},
+            ]
+
+            // Click event for TABLE HEADER tags
+            $('th').on('click', function()
+            {
+                // Store column name and sort order
+                var column = $(this).data('column');
+                var order = $(this).data('order');
+                var text = $(this).html();
+
+                // Check the sort order
+                if(order == 'desc')
+                {
+                    // Change direction for next click
+                    $(this).data('order', 'asc');
+
+                    // Sort the array accordingly
+                    myArray = myArray.sort((a, b) => a[column] > b[column] ? 1 : -1)
+                }
+                else
+                {
+                    // Change direction for next click
+                    $(this).data('order', 'desc');
+
+                    // Sort the array accordingly
+                    myArray = myArray.sort((a, b) => a[column] < b[column] ? 1 : -1)
+                }
+
+                // Rebuild the table
+                buildTable(myArray);
+            });
+
+            buildTable(myArray);
+
+            function buildTable(data)
+            {
+                // Store table
+                var tableBody = document.getElementById('myTableBody')
+
+                // Reset table HTML
+                tableBody.innerHTML = ''
+
+                // Loop through data array
+                for (var i = 0; i < data.length; i++)
+                {
+                    // Store HTML
+                    var row = `<tr>
+                                    <td>${data[i].name}</td>
+                                    <td>${data[i].age}</td>
+                                    <td>${data[i].birthdate}</td>
+                              </tr>`
+
+                    // Inject HTML
+                    tableBody.innerHTML += row
+                }
+            }
+
+        </script>
+
+    </body>
+
+</html>
