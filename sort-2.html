@@ -31,9 +31,9 @@
 
             <thead>
                 <tr class="bg-info">
-                    <th data-column="name" data-order="desc">Name</th>
-                    <th data-column="age" data-order="desc">Age</th>
-                    <th data-column="birthdate" data-order="desc">Birthday</th>
+                    <th data-column="name" data-order="desc">First Name</th>
+                    <th data-column="age" data-order="desc">Last Name</th>
+                    <th data-column="birthdate" data-order="desc">Email</th>
                 </tr>
             </thead>
 
@@ -45,15 +45,21 @@
 
         <script>
 
-            var myArray =
-            [
-                {'name':'Michael', 'age':'30', 'birthdate':'1989-11-10'},
-                {'name':'Mila'   , 'age':'32', 'birthdate':'1989-10-01'},
-                {'name':'Paul'   , 'age':'29', 'birthdate':'1990-10-14'},
-                {'name':'Dennis' , 'age':'25', 'birthdate':'1993-11-29'},
-                {'name':'Tim'    , 'age':'27', 'birthdate':'1991-03-12'},
-                {'name':'Erik'   , 'age':'24', 'birthdate':'1995-10-31'},
-            ]
+            var myArray = [];
+
+            $.ajax(
+            {
+                method: 'GET',
+                url: 'https://reqres.in/api/users',
+                success: function(response)
+                {
+                    // Store data from the API
+                    myArray = response.data;
+
+                    // Rebuild the HTML table
+                    buildTable(myArray);
+                }
+            })
 
             // Click event for TABLE HEADER tags
             $('th').on('click', function()
@@ -94,7 +100,7 @@
                 buildTable(data);
             })
 
-            buildTable(myArray);
+            //buildTable(myArray);
 
             function searchTable(value, data)
             {
@@ -107,8 +113,11 @@
                 // Loop through each element in the "data" array
                 for(var i = 0; i < data.length; i++)
                 {
-                    // Store the "Name" in lower case 
-                    var name = data[i].name.toLowerCase();
+                    // Store the "First Name" in lower case 
+                    var name = data[i].first_name.toLowerCase();
+
+                    // Store full name in lower case
+                    name = name.concat(' ', data[i].last_name.toLowerCase());
 
                     // Check if the name includes the specified value
                     if(name.includes(value))
@@ -135,9 +144,9 @@
                 {
                     // Store HTML
                     var row = `<tr>
-                                    <td>${data[i].name}</td>
-                                    <td>${data[i].age}</td>
-                                    <td>${data[i].birthdate}</td>
+                                    <td>${data[i].first_name}</td>
+                                    <td>${data[i].last_name}</td>
+                                    <td>${data[i].email}</td>
                               </tr>`
 
                     // Inject HTML
