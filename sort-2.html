@@ -20,6 +20,13 @@
 
     <body>
 
+        <div class="row">
+            <div class="card card-body">
+                <input id="search-input" class="form-control" type="text">
+            </div>
+        </div>
+
+
         <table id="myTable" class="table table-striped">
 
             <thead>
@@ -78,7 +85,42 @@
                 buildTable(myArray);
             });
 
+            // Key up event for the SEARCH BAR
+            $('#search-input').on('keyup', function()
+            {
+                var value = $(this).val();
+                var data = searchTable(value, myArray)
+
+                buildTable(data);
+            })
+
             buildTable(myArray);
+
+            function searchTable(value, data)
+            {
+                // Initialise blank array
+                var filteredData = [];
+
+                // Convert the value to lower case
+                value = value.toLowerCase();
+
+                // Loop through each element in the "data" array
+                for(var i = 0; i < data.length; i++)
+                {
+                    // Store the "Name" in lower case 
+                    var name = data[i].name.toLowerCase();
+
+                    // Check if the name includes the specified value
+                    if(name.includes(value))
+                    {
+                        // Add to output array
+                        filteredData.push(data[i]);
+                    }
+                }
+
+                // Return filtered array
+                return filteredData;
+            }
 
             function buildTable(data)
             {
